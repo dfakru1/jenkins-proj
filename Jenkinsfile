@@ -11,6 +11,7 @@ pipeline{
         stage("Install dependencies"){
             steps {
                 sh '''
+                sudo apt update && sudo apt install -y python3-venv python3-pip python3-full
                 python3 -m venv venv
                 . venv/bin/activate
                 pip install --upgrade pip
@@ -23,6 +24,27 @@ pipeline{
                 sh '''
                 . venv/bin/activate
                 pytest
+                '''
+            }
+        }
+        stage('Install Docker') {
+            steps {
+                sh '''
+                # Check if docker exists
+                if ! command -v docker &> /dev/null
+                then
+                    echo "Installing Docker..."
+                    sudo apt update
+                    sudo apt install -y docker.io
+                    sudo usermod -aG docker $USER
+                    sudo systemctl enable docker
+                    sudo systemctl start docker
+                else
+                    echo "Docker already installed"
+                fi
+
+                # Verify docker
+                docker --version
                 '''
             }
         }
