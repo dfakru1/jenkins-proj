@@ -27,27 +27,27 @@ pipeline{
                 '''
             }
         }
-        stage('Install Docker') {
-            steps {
-                sh '''
-                # Check if docker exists
-                if ! command -v docker &> /dev/null
-                then
-                    echo "Installing Docker..."
-                    sudo apt update
-                    sudo apt install -y docker.io
-                    sudo usermod -aG docker $USER
-                    sudo systemctl enable docker
-                    sudo systemctl start docker
-                else
-                    echo "Docker already installed"
-                fi
+        // stage('Install Docker') {
+        //     steps {
+        //         sh '''
+        //         # Check if docker exists
+        //         if ! command -v docker &> /dev/null
+        //         then
+        //             echo "Installing Docker..."
+        //             sudo apt update
+        //             sudo apt install -y docker.io
+        //             sudo usermod -aG docker $USER
+        //             sudo systemctl enable docker
+        //             sudo systemctl start docker
+        //         else
+        //             echo "Docker already installed"
+        //         fi
 
-                # Verify docker
-                docker --version
-                '''
-            }
-        }
+        //         # Verify docker
+        //         docker --version
+        //         '''
+        //     }
+        // }
         stage('Docker build'){
             steps{
                 sh 'docker build -t sample:1.0 .'
