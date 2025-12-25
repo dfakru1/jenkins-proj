@@ -8,16 +8,6 @@ pipeline{
             }
 
         }
-        // stage('Debug Python') {
-        //     steps {
-        //         sh '''
-        //         which python3
-        //         python3 --version
-        //         which pip
-        //         pip --version
-        //         '''
-        //     }
-        // }
         stage("Install dependencies"){
             steps {
                 sh '''
@@ -29,13 +19,16 @@ pipeline{
             }
         }
         stage('Run tests'){
-            steps{
-                sh 'pytest'
+            steps {
+                sh '''
+                . venv/bin/activate
+                pytest
+                '''
             }
         }
         stage('Docker build'){
             steps{
-                sh 'docker build -t fast-api:1.0 .'
+                sh 'docker build -t sample:1.0 .'
             }
         }
     }
