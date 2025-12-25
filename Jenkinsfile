@@ -8,6 +8,16 @@ pipeline{
             }
 
         }
+        stage('Debug Python') {
+            steps {
+                sh '''
+                which python3
+                python3 --version
+                which pip
+                pip --version
+                '''
+            }
+        }
         stage("Install dependencies"){
             steps{
             sh 'pip install -r requirements.txt'
