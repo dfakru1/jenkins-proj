@@ -1,5 +1,9 @@
 pipeline{
-    agent any
+    agent {
+        docker {
+            image 'python:3.11'
+        }
+    }
     stages{
         stage('checkout'){
             steps{
@@ -8,16 +12,16 @@ pipeline{
             }
 
         }
-        stage('Debug Python') {
-            steps {
-                sh '''
-                which python3
-                python3 --version
-                which pip
-                pip --version
-                '''
-            }
-        }
+        // stage('Debug Python') {
+        //     steps {
+        //         sh '''
+        //         which python3
+        //         python3 --version
+        //         which pip
+        //         pip --version
+        //         '''
+        //     }
+        // }
         stage("Install dependencies"){
             steps{
             sh 'pip install -r requirements.txt'
