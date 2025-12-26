@@ -2,6 +2,7 @@ pipeline{
     agent any
     environment{
         IMAGE_ID ="$BUILD_NUMBER"
+        DOCKER_IMAGE= "dfakru/sample"
     }
     stages{
         stage('checkout'){
@@ -54,7 +55,25 @@ pipeline{
         // }
         stage('Docker build'){
             steps{
-                sh 'docker build -t sample:${IMAGE_ID} .'
+                sh 'docker build -t ${DOCKER_IMAGE}:${IMAGE_ID} .'
+                sh 'docker tag ${DOCKER_IMAGE}:${IMAGE_ID} ${DOCKER_IMAGE}:latest'
+            }
+        }
+        stage('Docker Push'){
+            steps{
+                withCredentials([usernamePassword(
+                    crendentialsId: 'eb21ea8d-789f-4eb7-a889-6a75dd97154d',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+
+                )]) {
+                    sh '''
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    docker push ${DOCKER_IMAGE}:${IMAGE_ID}
+                    docker push ${DOCKER_IMAGE}:latest
+                    docker logout
+                    '''
+                }
             }
         }
     }
