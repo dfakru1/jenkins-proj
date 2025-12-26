@@ -1,7 +1,7 @@
 pipeline{
     agent any
     environment{
-        image_id=$BUILD_NUMBER
+        IMAGE_ID ="$BUILD_NUMBER"
     }
     stages{
         stage('checkout'){
@@ -54,7 +54,7 @@ pipeline{
         // }
         stage('Docker build'){
             steps{
-                sh 'docker build -t sample:${image_id} .'
+                sh 'docker build -t sample:${IMAGE_ID} .'
             }
         }
     }
