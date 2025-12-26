@@ -58,6 +58,7 @@ pipeline{
             }
         }
     }
+    
     post {
         success{
             echo 'FastAPI CI pipeline completed successfully'
