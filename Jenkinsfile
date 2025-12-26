@@ -76,6 +76,20 @@ pipeline{
                 }
             }
         }
+        stage('Sonarqube Scan'){
+            steps{
+                withSonarQubeEnv('sonarqube'){
+                    sh '''
+                    sonar-scanner \
+                        -Dsonar.projectkey=jenkins-proj \
+                        -Dsonar.sources=. \
+                        -Dsonar.language=py \
+                        -Dsonar.python.version=3.12
+
+                    '''
+                }
+            }
+        }
     }
 
 
