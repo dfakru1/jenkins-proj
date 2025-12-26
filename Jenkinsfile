@@ -1,5 +1,8 @@
 pipeline{
     agent any
+    environments{
+        image_id=$BUILD_NUMBER
+    }
     stages{
         stage('checkout'){
             steps{
@@ -27,7 +30,7 @@ pipeline{
                 '''
             }
         }
-        
+
         // stage('Install Docker') {
         //     steps {
         //         sh '''
@@ -51,7 +54,7 @@ pipeline{
         // }
         stage('Docker build'){
             steps{
-                sh 'docker build -t sample:1.0 .'
+                sh 'docker build -t sample:${env.image_id} .'
             }
         }
     }
