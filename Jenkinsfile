@@ -59,6 +59,9 @@ pipeline{
         //     }
         // }
         stage('Sonarqube Scan') {
+            tools {
+                sonarScanner 'sonar-scanner' // matches the name you set in Global Tool Config
+            }
             steps {
                 withSonarQubeEnv('sonarqube') {
                     sh """
