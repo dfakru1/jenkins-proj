@@ -59,6 +59,12 @@ pipeline{
         //     }
         // }
         stage('Sonarqube Scan'){
+            agent {
+                docker {
+                    image 'sonarsource/sonar-scanner-cli:latest'
+                    args '-v $WORKSPACE:/usr/src'
+        }
+    }
             steps{
                 withSonarQubeEnv('sonarqube'){
                     sh '''
