@@ -7,6 +7,9 @@ pipeline{
     // tools {
     //     sonarScanner 'sonar-scanner'
     // }
+    tools {
+        sonarRunner 'sonar-scanner'
+    }
     stages{
         stage('checkout'){
             steps{
