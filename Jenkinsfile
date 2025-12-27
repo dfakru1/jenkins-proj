@@ -4,9 +4,9 @@ pipeline{
         IMAGE_ID ="$BUILD_NUMBER"
         DOCKER_IMAGE= "dfakru/sample"
     }
-    // tools {
-    //     sonarScanner 'sonar-scanner'
-    // }
+    tools {
+        sonarScanner 'sonar-scanner'
+    }
     stages{
         stage('checkout'){
             steps{
