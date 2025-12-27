@@ -55,7 +55,7 @@ pipeline{
         //         '''
         //     }
         // }
-                stage('Sonarqube Scan'){
+        stage('Sonarqube Scan'){
             steps{
                 withSonarQubeEnv('sonarqube'){
                     sh '''
