@@ -4,9 +4,9 @@ pipeline{
         IMAGE_ID ="$BUILD_NUMBER"
         DOCKER_IMAGE= "dfakru/sample"
     }
-    tools {
-        sonarScanner 'sonar-scanner'
-    }
+    // tools {
+    //     sonarScanner 'sonar-scanner'
+    // }
     stages{
         stage('checkout'){
             steps{
@@ -70,7 +70,7 @@ pipeline{
                 }
             }
         }
-                stage('Quality Gate') {
+        stage('Quality Gate') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
