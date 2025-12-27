@@ -60,19 +60,16 @@ pipeline{
         // }
         stage('Sonarqube Scan') {
             steps {
-                script {
-                    docker.image('sonarsource/sonar-scanner-cli:latest').inside("-v $WORKSPACE:/usr/src") {
-                        withSonarQubeEnv('sonarqube') {
-                            sh '''
-                            sonar-scanner \
-                                -Dsonar.projectKey=jenkins-proj \
-                                -Dsonar.sources=. \
-                                -Dsonar.language=py \
-                                -Dsonar.python.coverage.reportPaths=coverage.xml \
-                                -Dsonar.python.version=3.12
-                            '''
-                        }
-                    }
+                withSonarQubeEnv('sonarqube') {
+                    sh """
+                    docker run --rm -v \$WORKSPACE:/usr/src sonarsource/sonar-scanner-cli:latest \
+                        sonar-scanner \
+                        -Dsonar.projectKey=jenkins-proj \
+                        -Dsonar.sources=. \
+                        -Dsonar.language=py \
+                        -Dsonar.python.coverage.reportPaths=coverage.xml \
+                        -Dsonar.python.version=3.12
+                    """
                 }
             }
         }
