@@ -65,6 +65,7 @@ pipeline{
                     /opt/sonar-scanner/bin/sonar-scanner \
                         -Dsonar.projectKey=jenkins-proj \
                         -Dsonar.sources=. \
+                        -Dsonar.exclusions=venv/** \
                         -Dsonar.language=py \
                         -Dsonar.python.coverage.reportPaths=coverage.xml \
                         -Dsonar.python.version=3.12
