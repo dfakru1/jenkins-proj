@@ -15,6 +15,7 @@ pipeline{
         stage("Install dependencies"){
             steps {
                 sh '''
+                sudo apt update && sudo apt install -y python3-venv python3-pip python3-full
                 python3 -m venv venv
                 . venv/bin/activate
                 pip install --upgrade pip
@@ -61,7 +62,7 @@ pipeline{
         stage('Docker Push'){
             steps{
                 withCredentials([usernamePassword(
-                    credentialsId: 'eb21ea8d-789f-4eb7-a889-6a75dd97154d',
+                    credentialsId: 'docker-creds',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
 
