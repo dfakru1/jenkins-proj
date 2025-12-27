@@ -58,31 +58,13 @@ pipeline{
         //         '''
         //     }
         // }
-        // stage('Sonarqube Scan') {
-        //     steps {
-        //         withSonarQubeEnv('sonarqube') {
-        //             sh """
-        //             docker run --rm -v \$WORKSPACE:/usr/src sonarsource/sonar-scanner-cli:latest \
-        //                 sonar-scanner \
-        //                 -Dsonar.projectKey=jenkins-proj \
-        //                 -Dsonar.sources=. \
-        //                 -Dsonar.language=py \
-        //                 -Dsonar.python.coverage.reportPaths=coverage.xml \
-        //                 -Dsonar.python.version=3.12
-        //             """
-        //         }
-        //     }
-        // }
         stage('Sonarqube Scan') {
             steps {
-                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                withSonarQubeEnv('sonarqube') {
                     sh """
-                    docker run --rm -v \$WORKSPACE:/usr/src sonarsource/sonar-scanner-cli:latest \
-                        sonar-scanner \
+                    sonar-scanner \
                         -Dsonar.projectKey=jenkins-proj \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=http://172.31.22.148:9000 \
-                        -Dsonar.login=\$SONAR_TOKEN \
                         -Dsonar.language=py \
                         -Dsonar.python.coverage.reportPaths=coverage.xml \
                         -Dsonar.python.version=3.12
@@ -90,6 +72,23 @@ pipeline{
                 }
             }
         }
+        // stage('Sonarqube Scan') {
+        //     steps {
+        //         withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+        //             sh """
+        //             docker run --rm -v \$WORKSPACE:/usr/src sonarsource/sonar-scanner-cli:latest \
+        //                 sonar-scanner \
+        //                 -Dsonar.projectKey=jenkins-proj \
+        //                 -Dsonar.sources=. \
+        //                 -Dsonar.host.url=http://172.31.22.148:9000 \
+        //                 -Dsonar.login=\$SONAR_TOKEN \
+        //                 -Dsonar.language=py \
+        //                 -Dsonar.python.coverage.reportPaths=coverage.xml \
+        //                 -Dsonar.python.version=3.12
+        //             """
+        //         }
+        //     }
+        // }
         stage('Quality Gate') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
