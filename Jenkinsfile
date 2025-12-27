@@ -58,24 +58,21 @@ pipeline{
         //         '''
         //     }
         // }
-        stage('Sonarqube Scan'){
-            agent {
-                docker {
-                    image 'sonarsource/sonar-scanner-cli:latest'
-                    args '-v $WORKSPACE:/usr/src'
-        }
-    }
-            steps{
-                withSonarQubeEnv('sonarqube'){
-                    sh '''
-                    sonar-scanner \
-                        -Dsonar.projectkey=jenkins-proj \
-                        -Dsonar.sources=. \
-                        -Dsonar.language=py \
-                        -Dsonar.python.coverage.reportPaths=coverage.xml \
-                        -Dsonar.python.version=3.12
-
-                    '''
+        stage('Sonarqube Scan') {
+            steps {
+                script {
+                    docker.image('sonarsource/sonar-scanner-cli:latest').inside("-v $WORKSPACE:/usr/src") {
+                        withSonarQubeEnv('sonarqube') {
+                            sh '''
+                            sonar-scanner \
+                                -Dsonar.projectKey=jenkins-proj \
+                                -Dsonar.sources=. \
+                                -Dsonar.language=py \
+                                -Dsonar.python.coverage.reportPaths=coverage.xml \
+                                -Dsonar.python.version=3.12
+                            '''
+                        }
+                    }
                 }
             }
         }
