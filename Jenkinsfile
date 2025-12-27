@@ -81,7 +81,7 @@ pipeline{
                         sonar-scanner \
                         -Dsonar.projectKey=jenkins-proj \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.host.url=http://172.31.22.148:9000 \
                         -Dsonar.login=\$SONAR_TOKEN \
                         -Dsonar.language=py \
                         -Dsonar.python.coverage.reportPaths=coverage.xml \
