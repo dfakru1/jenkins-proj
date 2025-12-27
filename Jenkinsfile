@@ -59,13 +59,10 @@ pipeline{
         //     }
         // }
         stage('Sonarqube Scan') {
-            tools {
-                sonarScanner 'sonar-scanner' // matches the name you set in Global Tool Config
-            }
             steps {
                 withSonarQubeEnv('sonarqube') {
                     sh """
-                    sonar-scanner \
+                    /opt/sonar-scanner/bin/sonar-scanner \
                         -Dsonar.projectKey=jenkins-proj \
                         -Dsonar.sources=. \
                         -Dsonar.language=py \
