@@ -4,6 +4,9 @@ pipeline{
         IMAGE_ID ="$BUILD_NUMBER"
         DOCKER_IMAGE= "dfakru/sample"
     }
+    tools {
+        sonarScanner 'sonar-scanner'
+    }
     stages{
         stage('checkout'){
             steps{
@@ -26,7 +29,7 @@ pipeline{
             steps {
                 sh '''
                 . venv/bin/activate
-                pytest
+                pytest --cov=backend --cov-report=xml:coverage.xml
                 '''
             }
         }
@@ -52,6 +55,28 @@ pipeline{
         //         '''
         //     }
         // }
+                stage('Sonarqube Scan'){
+            steps{
+                withSonarQubeEnv('sonarqube'){
+                    sh '''
+                    sonar-scanner \
+                        -Dsonar.projectkey=jenkins-proj \
+                        -Dsonar.sources=. \
+                        -Dsonar.language=py \
+                        -Dsonar.python.coverage.reportPaths=coverage.xml \
+                        -Dsonar.python.version=3.12
+
+                    '''
+                }
+            }
+        }
+                stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
         stage('Docker build'){
             steps{
                 sh 'docker build -t ${DOCKER_IMAGE}:${IMAGE_ID} .'
@@ -75,26 +100,16 @@ pipeline{
                 }
             }
         }
-        stage('Sonarqube Scan'){
-            steps{
-                withSonarQubeEnv('sonarqube'){
-                    sh '''
-                    sonar-scanner \
-                        -Dsonar.projectkey=jenkins-proj \
-                        -Dsonar.sources=. \
-                        -Dsonar.language=py \
-                        -Dsonar.python.version=3.12
 
-                    '''
-                }
-            }
-        }
     }
 
 
     post {
-        success{
-            echo 'FastAPI CI pipeline completed successfully'
+        success {
+            echo "✅ Coverage reported to SonarQube. Quality Gate passed."
+        }
+        failure {
+            echo "❌ Quality Gate failed or tests failed."
         }
     }
 }
