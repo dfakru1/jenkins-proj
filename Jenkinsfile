@@ -119,8 +119,10 @@ pipeline{
                     <p><a href="${env.BUILD_URL}">View Build</a></p>
                 """,
                 mimeType: 'text/html',
+                to: "${MAIL_RECIPIENTS}",
                 attachmentsPattern: 'coverage.xml,pytest-report.xml',
-                attachLog: true
+                attachLog: true,
+                to:
             )
         }
         failure {
@@ -136,6 +138,7 @@ pipeline{
                     <p><a href="${env.BUILD_URL}">View Build Logs</a></p>
                 """,
                 mimeType: 'text/html',
+                to: "${MAIL_RECIPIENTS}",
                 attachLog: true
             )
         }
