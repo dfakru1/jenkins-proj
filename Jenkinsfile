@@ -120,7 +120,8 @@ pipeline{
                 """,
                 mimeType: 'text/html',
                 attachmentsPattern: 'coverage.xml,pytest-report.xml',
-                attachLog: true
+                attachLog: true,
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
         }
         failure {
@@ -136,7 +137,8 @@ pipeline{
                     <p><a href="${env.BUILD_URL}">View Build Logs</a></p>
                 """,
                 mimeType: 'text/html',
-                attachLog: true
+                attachLog: true,
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
         }
         always {
