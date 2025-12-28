@@ -121,8 +121,7 @@ pipeline{
                 mimeType: 'text/html',
                 to: "${MAIL_RECIPIENTS}",
                 attachmentsPattern: 'coverage.xml,pytest-report.xml',
-                attachLog: true,
-                to:
+                attachLog: true
             )
         }
         failure {
