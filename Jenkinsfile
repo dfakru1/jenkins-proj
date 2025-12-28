@@ -37,27 +37,6 @@ pipeline{
             }
         }
 
-        // stage('Install Docker') {
-        //     steps {
-        //         sh '''
-        //         # Check if docker exists
-        //         if ! command -v docker &> /dev/null
-        //         then
-        //             echo "Installing Docker..."
-        //             sudo apt update
-        //             sudo apt install -y docker.io
-        //             sudo usermod -aG docker $USER
-        //             sudo systemctl enable docker
-        //             sudo systemctl start docker
-        //         else
-        //             echo "Docker already installed"
-        //         fi
-
-        //         # Verify docker
-        //         docker --version
-        //         '''
-        //     }
-        // }
         stage('Sonarqube Scan') {
             steps {
                 withSonarQubeEnv('sonarqube') {
@@ -73,24 +52,6 @@ pipeline{
                 }
             }
         }
-        
-        // stage('Sonarqube Scan') {
-        //     steps {
-        //         withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-        //             sh """
-        //             docker run --rm -v \$WORKSPACE:/usr/src sonarsource/sonar-scanner-cli:latest \
-        //                 sonar-scanner \
-        //                 -Dsonar.projectKey=jenkins-proj \
-        //                 -Dsonar.sources=. \
-        //                 -Dsonar.host.url=http://172.31.22.148:9000 \
-        //                 -Dsonar.login=\$SONAR_TOKEN \
-        //                 -Dsonar.language=py \
-        //                 -Dsonar.python.coverage.reportPaths=coverage.xml \
-        //                 -Dsonar.python.version=3.12
-        //             """
-        //         }
-        //     }
-        // }
         stage('Quality Gate') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
