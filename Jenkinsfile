@@ -112,5 +112,8 @@ pipeline{
         failure {
             echo "❌ Quality Gate failed or tests failed."
         }
-    }
+        always {
+            archiveArtifacts artifacts: 'coverage.xml', fingerprint: true
+  }
+}
 }
