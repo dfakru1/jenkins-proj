@@ -120,8 +120,7 @@ pipeline{
                 """,
                 mimeType: 'text/html',
                 attachmentsPattern: 'coverage.xml,pytest-report.xml',
-                attachLog: true,
-                to: 'babalearning22@gmail.com,ansuha.11052018@gmail.com'
+                attachLog: true
             )
         }
         failure {
@@ -137,8 +136,7 @@ pipeline{
                     <p><a href="${env.BUILD_URL}">View Build Logs</a></p>
                 """,
                 mimeType: 'text/html',
-                attachLog: true,
-                to: 'babalearning22@gmail.com,ansuha.11052018@gmail.com'
+                attachLog: true
             )
         }
         always {
