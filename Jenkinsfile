@@ -119,7 +119,6 @@ pipeline{
                     <p><a href="${env.BUILD_URL}">View Build</a></p>
                 """,
                 mimeType: 'text/html',
-                to: '',
                 attachmentsPattern: 'coverage.xml,pytest-report.xml',
                 attachLog: true
             )
@@ -137,7 +136,6 @@ pipeline{
                     <p><a href="${env.BUILD_URL}">View Build Logs</a></p>
                 """,
                 mimeType: 'text/html',
-                to: '',
                 attachLog: true
             )
         }
