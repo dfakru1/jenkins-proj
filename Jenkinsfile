@@ -120,7 +120,7 @@ pipeline{
                 """,
                 mimeType: 'text/html',
                 to: "${MAIL_RECIPIENTS}",
-                from: "Jenkins CI",
+                from: "Jenkins CI <${MAIL_FROM_EMAIL}>",
                 attachmentsPattern: 'coverage.xml,pytest-report.xml',
                 attachLog: true
             )
@@ -139,7 +139,7 @@ pipeline{
                 """,
                 mimeType: 'text/html',
                 to: "${MAIL_RECIPIENTS}",
-                from: "Jenkins CI",
+                from: "Jenkins CI <${MAIL_FROM_EMAIL}>",
                 attachLog: true
             )
         }
