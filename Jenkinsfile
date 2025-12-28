@@ -108,9 +108,38 @@ pipeline{
     post {
         success {
             echo "✅ Coverage reported to SonarQube. Quality Gate passed."
+            
+            emailext(
+                subject: "✅ Jenkins Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    <p>Build <b>SUCCESS</b></p>
+                    <p><b>Job:</b> ${env.JOB_NAME}</p>
+                    <p><b>Build:</b> #${env.BUILD_NUMBER}</p>
+                    <p><b>Branch:</b> ${env.BRANCH_NAME}</p>
+                    <p><a href="${env.BUILD_URL}">View Build</a></p>
+                """,
+                mimeType: 'text/html',
+                attachmentsPattern: 'coverage.xml,pytest-report.xml',
+                attachLog: true,
+                to: 'babalearning22@gmail.com,ansuha.11052018@gmail.com'
+            )
         }
         failure {
             echo "❌ Quality Gate failed or tests failed."
+            
+            emailext(
+                subject: "❌ Jenkins Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    <p>Build <b>FAILED</b></p>
+                    <p><b>Job:</b> ${env.JOB_NAME}</p>
+                    <p><b>Build:</b> #${env.BUILD_NUMBER}</p>
+                    <p><b>Branch:</b> ${env.BRANCH_NAME}</p>
+                    <p><a href="${env.BUILD_URL}">View Build Logs</a></p>
+                """,
+                mimeType: 'text/html',
+                attachLog: true,
+                to: 'babalearning22@gmail.com,ansuha.11052018@gmail.com'
+            )
         }
         always {
             archiveArtifacts artifacts: 'coverage.xml', fingerprint: true
