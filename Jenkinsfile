@@ -82,6 +82,25 @@ pipeline{
                 }
             }
         }
+        stage('Deploy') {
+            steps {
+                sh '''
+                echo "Deploying application..."
+
+                docker stop app || true
+                docker rm app || true
+
+                docker pull ${DOCKER_IMAGE}:latest
+
+                docker run -d \
+                --name app \
+                -p 8000:8000 \
+                --restart unless-stopped \
+                ${DOCKER_IMAGE}:latest
+                '''
+            }
+        }
+
 
     }
 
