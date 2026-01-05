@@ -78,6 +78,13 @@ pipeline{
                     docker push ${DOCKER_IMAGE}:${IMAGE_ID}
                     docker push ${DOCKER_IMAGE}:latest
                     docker logout
+
+                    # Remove local images after push
+                    docker rmi ${DOCKER_IMAGE}:${IMAGE_ID} || true
+                    docker rmi ${DOCKER_IMAGE}:latest || true
+
+                    # Optional: remove dangling/unused images
+                    docker image prune -f
                     '''
                 }
             }
